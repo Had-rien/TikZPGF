@@ -1,0 +1,54 @@
+\documentclass[a4paper]{article}
+\usepackage[french]{babel}
+\usepackage[]{tikz}
+\usetikzlibrary{patterns,shapes.arrows,shapes.geometric,positioning,calc,arrows,decorations.markings,backgrounds,fit,decorations.pathreplacing}
+\usepackage{smartdiagram}
+\usepackage[bottom]{footmisc}
+\usesmartdiagramlibrary{additions}
+
+\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+   1 with {\arrow[semithick]{open triangle 60}}},
+   double distance=1.4pt, shorten >= 5.5pt,
+   preaction = {decorate},
+   postaction = {draw,line width=1.4pt, yellow!10,shorten >= 4.5pt, opacity=0.6}]
+
+\begin{document}
+
+\begin{figure}
+\begin{tikzpicture}[
+                align=center,
+                block/.style    = { rectangle, thick, 
+                                    fill=blue!20, text width=1.3cm, text centered,
+                                    rounded corners, minimum height=0.5cm },
+                line/.style     = { draw, thick, ->, shorten >=1pt },
+            ]
+            \pgfmathsetmacro{\x}{-2} %position
+            \tikzstyle{surround} = [fill=yellow!20,thick,draw=black,rounded corners=2mm]
+
+              \foreach \y in {0,1,2,3}{
+                    \node [draw, block] (a\y) at (\x,-\y*0.75) {Coeur};
+
+                    \node [inner sep=0,minimum size=0,right=0.5cm of a\y] (d\y) {};
+                    
+                    \node [draw, block, right=0.5cm of d\y] (c\y) {Mémoire}; 
+                    
+                    
+                    \draw [ vecArrow] ($(d\y)+(0.1,0)$) to (a\y) {};
+                    \draw [ vecArrow] (d\y) to (c\y) {};
+              }
+
+            \node (i) [below right =2mm and -5mm of a3] {Processeur};
+            \begin{pgfonlayer}{background} 
+                 \node[surround] (background) [fit = (a0) (c3) (i),inner sep=1mm] {};
+                 \node[surround] (background) [fit = (a0) (c3) ,inner sep=2mm, fill=green!40,draw] {};
+            \end{pgfonlayer}
+            
+            \node (v) [draw, block,left = 2cm of a1] {Script};
+            \node (w) [inner sep=0,minimum size=0,right = 1.45cm of v] {};
+        
+            \node [double arrow,draw, text width=1cm,right=0mm of v] (w) {\tiny{Parallèle}};
+            
+        \end{tikzpicture}
+\end{figure}
+
+\end{document}
