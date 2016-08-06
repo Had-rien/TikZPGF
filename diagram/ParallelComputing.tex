@@ -13,8 +13,45 @@
    postaction = {draw,line width=1.4pt, yellow!10,shorten >= 4.5pt, opacity=0.6}]
 
 \begin{document}
+\begin{tikzpicture}[
+        align=center,
+        block/.style    = { rectangle, thick, 
+                            fill=blue!10, text width=1.3cm, text centered,
+                            rounded corners, minimum height=0.5cm },
+        line/.style     = { draw, thick, ->, shorten >=1pt },
+    ]
+    \pgfmathsetmacro{\x}{-2} %position
+    \tikzstyle{surround} = [fill=yellow!20,thick,draw=black,rounded corners=2mm]
 
-\begin{figure}
+      \foreach \y in {0,2,3}{% node on the grid we have drawn 
+            \node [draw, block] (a\y) at (\x,-\y*0.75) {Coeur};
+
+            \node [inner sep=0,minimum size=0,right=0.5cm of a\y] (d\y) {};
+            
+            \node [inner sep=0,minimum size=0, right=0.5cm of d\y] (c\y) {}; 
+            
+          }
+    \node [draw, rectangle, thick, text width=1.6cm, text centered, rounded corners, minimum height=0.5cm, fill=red!60] (a1) at (\x,-1*0.75) {};
+
+
+    \node (i) [below =1mm of a3] {CPU};
+    \begin{pgfonlayer}{background} 
+         \node[surround] (background) [fit = (a0)  (i),inner sep=1mm] {};
+    \end{pgfonlayer}
+    \begin{pgfonlayer}{main} 
+         \node[surround] (background) [fit = (a1)  ,inner sep=2mm, fill=green!60,draw,thick] {};
+    \end{pgfonlayer}
+    
+    \node [draw, rectangle, thick, text width=1.3cm, text centered, rounded corners, minimum height=0.5cm, fill=red!60] (a1) at (\x,-1*0.75) {\Large{Core}};
+
+    
+    \node [double arrow,draw, text width=1.7cm,left=4mm of a1] (w) {\textbf{Sequential}};
+    \node (v) [ fill=blue!30,draw, rectangle, thick, text width=1.3cm, text centered, rounded corners, minimum height=0.5cm,left = 0mm of w] {Script};
+
+\end{tikzpicture}
+
+\vspace{5mm}
+
 \begin{tikzpicture}[
                 align=center,
                 block/.style    = { rectangle, thick, 
@@ -26,29 +63,30 @@
             \tikzstyle{surround} = [fill=yellow!20,thick,draw=black,rounded corners=2mm]
 
               \foreach \y in {0,1,2,3}{
-                    \node [draw, block] (a\y) at (\x,-\y*0.75) {Coeur};
+                    \node [draw, block] (a\y) at (\x,-\y*0.75) {Core};
 
                     \node [inner sep=0,minimum size=0,right=0.5cm of a\y] (d\y) {};
                     
-                    \node [draw, block, right=0.5cm of d\y] (c\y) {Mémoire}; 
+                    \node [draw, block, right=0.5cm of d\y] (c\y) {Memory}; 
                     
                     
                     \draw [ vecArrow] ($(d\y)+(0.1,0)$) to (a\y) {};
                     \draw [ vecArrow] (d\y) to (c\y) {};
               }
 
-            \node (i) [below right =2mm and -5mm of a3] {Processeur};
+            \node (i) [below right =2mm and -1mm of a3] {CPU};
             \begin{pgfonlayer}{background} 
                  \node[surround] (background) [fit = (a0) (c3) (i),inner sep=1mm] {};
                  \node[surround] (background) [fit = (a0) (c3) ,inner sep=2mm, fill=green!40,draw] {};
             \end{pgfonlayer}
             
-            \node (v) [draw, block,left = 2cm of a1] {Script};
-            \node (w) [inner sep=0,minimum size=0,right = 1.45cm of v] {};
-        
-            \node [double arrow,draw, text width=1cm,right=0mm of v] (w) {\tiny{Parallèle}};
+            \node [double arrow,draw, text width=1.7cm,left=2mm of a1] (w) {\textbf{Parallel}};
+
             
-        \end{tikzpicture}
-\end{figure}
+            \node (v) [draw, block,left = 0mm of w] {Script};
+
+\end{tikzpicture}
+
+
 
 \end{document}
